@@ -1,0 +1,272 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Chistine 💖</title>
+
+<style>
+body{
+  margin:0;
+  padding:0;
+  background:black;
+  font-family:Arial, sans-serif;
+  color:white;
+  text-align:center;
+  overflow-x:hidden;
+}
+
+/* ESTRELLAS */
+.stars{
+  position:fixed;
+  width:100%;
+  height:100%;
+  top:0;
+  left:0;
+  z-index:0;
+}
+.star{
+  position:absolute;
+  width:2px;
+  height:2px;
+  background:white;
+  border-radius:50%;
+  animation:twinkle 2s infinite alternate;
+}
+@keyframes twinkle{
+  from{opacity:0.2;}
+  to{opacity:1;}
+}
+
+/* FOTO */
+.photo-container{
+  margin-top:30px;
+  position:relative;
+  z-index:2;
+}
+.love-photo{
+  width:220px;
+  max-width:80%;
+  border-radius:20px;
+  cursor:pointer;
+  box-shadow:0 0 30px #ff2e88;
+  animation:float 4s ease-in-out infinite;
+}
+@keyframes float{
+  0%{transform:translateY(0);}
+  50%{transform:translateY(-10px);}
+  100%{transform:translateY(0);}
+}
+
+/* CORAZÓN GRANDE */
+.heart{
+  position:relative;
+  width:90vw;
+  height:90vw;
+  max-width:500px;
+  max-height:500px;
+  margin:20px auto;
+  z-index:2;
+}
+.particle{
+  position:absolute;
+  color:#ff2e88;
+  font-size:14px;
+}
+
+/* CORAZONES CAYENDO */
+.falling-heart{
+  position:fixed;
+  top:-20px;
+  font-size:20px;
+  color:#ff4da6;
+  animation:fall linear forwards;
+  z-index:1;
+}
+@keyframes fall{
+  to{
+    transform:translateY(110vh);
+    opacity:0;
+  }
+}
+
+/* MENSAJE */
+.secret-message{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.92);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+  opacity:0;
+  pointer-events:none;
+  transition:0.4s;
+  z-index:5;
+}
+.secret-message.active{
+  opacity:1;
+  pointer-events:auto;
+}
+.secret-content{
+  background:linear-gradient(145deg,#ff4da6,#ff1a75);
+  padding:25px;
+  border-radius:20px;
+  max-width:500px;
+  font-size:14px;
+  line-height:1.6;
+}
+#typedText{
+  white-space:pre-wrap;
+}
+
+/* TEXTO FINAL GRANDE */
+.final-love{
+  font-size:28px;
+  margin-top:20px;
+  display:none;
+  animation:pop 1s ease forwards;
+}
+@keyframes pop{
+  from{transform:scale(0.5);opacity:0;}
+  to{transform:scale(1);opacity:1;}
+}
+
+/* BOTÓN MÚSICA */
+#musicBtn{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:#ff2e88;
+  color:white;
+  border:none;
+  padding:10px 15px;
+  border-radius:20px;
+  cursor:pointer;
+  font-size:14px;
+  box-shadow:0 0 15px #ff2e88;
+  z-index:10;
+}
+</style>
+</head>
+
+<body>
+
+<div class="stars" id="stars"></div>
+
+<audio id="bgMusic" loop>
+  <source src="musica.mp3" type="audio/mpeg">
+</audio>
+
+<button id="musicBtn">🎵 Activar música</button>
+
+<div class="photo-container">
+  <img src="foto.jpg" class="love-photo" id="photo">
+</div>
+
+<div class="heart" id="heart"></div>
+
+<div class="secret-message" id="secretBox">
+  <div class="secret-content">
+    <div id="typedText"></div>
+    <div class="final-love" id="finalText">Te amo Chistine 💖</div>
+    <br><br>💖 (Toca afuera para cerrar)
+  </div>
+</div>
+
+<script>
+
+/* ESTRELLAS */
+const stars = document.getElementById("stars");
+for(let i=0;i<150;i++){
+  const s=document.createElement("div");
+  s.className="star";
+  s.style.left=Math.random()*100+"%";
+  s.style.top=Math.random()*100+"%";
+  s.style.animationDuration=(Math.random()*3+1)+"s";
+  stars.appendChild(s);
+}
+
+/* CORAZÓN GRANDE */
+const heart=document.getElementById("heart");
+setTimeout(()=>{
+for(let i=0;i<900;i++){
+  const p=document.createElement("div");
+  p.className="particle";
+  p.innerHTML="❤";
+
+  const t=Math.random()*Math.PI*2;
+  const x=16*Math.pow(Math.sin(t),3);
+  const y=-(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t));
+
+  const scale=heart.offsetWidth/40;
+
+  p.style.left=(heart.offsetWidth/2 + x*scale)+"px";
+  p.style.top=(heart.offsetHeight/2 + y*scale)+"px";
+
+  heart.appendChild(p);
+}
+},100);
+
+/* CORAZONES CAYENDO */
+setInterval(()=>{
+  const h=document.createElement("div");
+  h.className="falling-heart";
+  h.innerHTML="❤";
+  h.style.left=Math.random()*100+"vw";
+  h.style.animationDuration=(Math.random()*3+3)+"s";
+  document.body.appendChild(h);
+  setTimeout(()=>{h.remove();},6000);
+},400);
+
+/* MENSAJE COMPLETO */
+const message = `Y al final solo somos tú y yo juntos contra las adversidades que se nos cruzan en el camino de nuestro querer. Y aun así seguimos caminando juntos, sin importar lo que digan o lo que piensen, solo nosotros sabemos que nos amamos de una forma tan inexplicable que siempre que yo te veo me pongo a pensar cómo es que la mente es tan poderosa que puede hacer que solo con ver tu bello rostro y ese color café en tus ojos tan brillantes me pone contento y me entran unas ganotas de besarte que no comprendo.
+
+Neta que me gustaría cumplir mis metas contigo a mi lado y de igual forma yo ver cómo logras tus sueños. Y si algo llega a desanimarnos poder estar el uno para el otro, y que jamás nos soltemos de la mano se cruce quien se cruce y llegar al final de la vida contigo a mi lado...`;
+
+let index=0;
+let typingInterval;
+
+const music=document.getElementById("bgMusic");
+const btn=document.getElementById("musicBtn");
+
+btn.addEventListener("click",()=>{
+  if(music.paused){
+    music.play();
+    btn.innerHTML="🔊 Música activada";
+  }else{
+    music.pause();
+    btn.innerHTML="🎵 Activar música";
+  }
+});
+
+document.getElementById("photo").addEventListener("click",()=>{
+  music.play(); 
+  document.getElementById("secretBox").classList.add("active");
+  document.getElementById("typedText").innerHTML="";
+  document.getElementById("finalText").style.display="none";
+  index=0;
+
+  typingInterval=setInterval(()=>{
+    if(index<message.length){
+      document.getElementById("typedText").innerHTML+=message.charAt(index);
+      index++;
+    }else{
+      clearInterval(typingInterval);
+      document.getElementById("finalText").style.display="block";
+    }
+  },25);
+});
+
+document.getElementById("secretBox").addEventListener("click",()=>{
+  document.getElementById("secretBox").classList.remove("active");
+  clearInterval(typingInterval);
+});
+
+</script>
+
+</body>
+</html>
